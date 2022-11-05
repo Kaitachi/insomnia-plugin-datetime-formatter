@@ -1,10 +1,13 @@
 {
-  "name": "insomnia-plugin-datetime-formatter",
-  "version": "0.0.1",
-  "private": true,
-  "insomnia": {
-    "name": "datetime-formatter",
-    "description": ""
-  },
-  "main": "main.js"
+    "name": "insomnia-plugin-datetime-formatter",
+    "version": "0.0.1",
+    "private": true,
+    "insomnia": {
+        "name": "datetime-formatter",
+        "description": "Choose a datetime and how it should be formatted"
+    },
+    "main": "main.js",
+    "dependencies": {
+        "moment": "^2.29.1"
+    }
 }
