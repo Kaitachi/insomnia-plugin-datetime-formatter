@@ -37,7 +37,7 @@ module.exports.templateTags = [{
             defaultValue: '2022-01-01'
         },
         {
-            displayName: 'Input format',
+            displayName: 'Input Format',
             type: 'enum',
             options: [
                 { displayName: 'ISO-8601', value: 'iso-8601' },
@@ -48,7 +48,7 @@ module.exports.templateTags = [{
         },
         {
             help: 'moment.js format string',
-            displayName: 'Custom Format Template',
+            displayName: 'Custom Input Format Template',
             type: 'string',
             placeholder: 'MMMM Do YYYY, h:mm:ss a',
             hide: args => args[1].value !== 'custom',
@@ -89,51 +89,50 @@ module.exports.templateTags = [{
             outputDateType = outputDateType.toLowerCase();
         }
 
-
         let date;
 
         switch (inputDateType) {
             case 'millis':
             case 'ms':
-                //date =
-                //return now.getTime() + '';
+                date = moment(Number(inputDate));
+                break;
 
             case 'unix':
             case 'seconds':
             case 's':
-                return Math.round(now.getTime() / 1000) + '';
+                date = moment(Number(inputDate) * 1000);
+                break;
 
             case 'iso-8601':
-                //return now.toISOString();
-                date = moment(inputDate, inputDateType);
+                date = moment(inputDate, moment.ISO_8601);
                 break;
 
             case 'custom':
-                return moment(now).format(inputFormatStr);
+                date = moment(inputDate, inputFormatStr);
+                break;
 
             default:
                 throw new Error(`Invalid date type "${inputDateType}"`);
         }
 
-        console.warn(date);
-        //return date;
-
-        const now = new Date();
-
-        switch (inputDateType) {
+        switch (outputDateType) {
             case 'millis':
             case 'ms':
-                return now.getTime() + '';
+                return date.valueOf() + '';
+
             case 'unix':
             case 'seconds':
             case 's':
-                return Math.round(now.getTime() / 1000) + '';
+                return Math.round(date.valueOf() / 1000) + '';
+
             case 'iso-8601':
-                return now.toISOString();
+                return date.toISOString();
+
             case 'custom':
-                return moment(now).format(inputFormatStr);
+                return date.format(outputFormatStr);
+
             default:
-                throw new Error(`Invalid date type "${inputDateType}"`);
+                throw new Error(`Invalid date type "${outputDateType}"`);
         }
     }
 }];
