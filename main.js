@@ -1,50 +1,26 @@
 const moment = require('moment');
 
-/**
-* Example template tag that generates a random number
-* between a user-provided MIN and MAX
-*/
+const formatOptions = [
+    { displayName: 'ISO-8601', value: 'iso-8601' },
+    { displayName: 'Milliseconds', value: 'millis' },
+    { displayName: 'Unix', value: 'unix' },
+    { displayName: 'Custom Format', value: 'custom' },
+];
+
 module.exports.templateTags = [{
-    name: 'randomInteger',
-    displayName: 'Random Integer',
-    description: 'Generate a random integer.',
-    args: [
-        {
-            displayName: 'Minimum',
-            description: 'Minimum potential value',
-            type: 'number',
-            defaultValue: 0
-        },
-        {
-            displayName: 'Maximum',
-            description: 'Maximum potential value',
-            type: 'number',
-            defaultValue: 100
-        }
-    ],
-    async run (context, min, max) {
-        return Math.round(min + Math.random() * (max - min));
-    }
-},
-{
     name: 'customDateTime',
     displayName: 'Custom Date',
-    description: 'Generate a custom date time',
+    description: 'date and time in custom format',
     args: [
         {
-            displayName: 'Date to be formatted',
+            displayName: 'Date to be Formatted',
             type: 'string',
-            defaultValue: '2022-01-01'
+            defaultValue: moment().format('YYYY-MM-DD')
         },
         {
             displayName: 'Input Format',
             type: 'enum',
-            options: [
-                { displayName: 'ISO-8601', value: 'iso-8601' },
-                { displayName: 'Milliseconds', value: 'millis' },
-                { displayName: 'Unix', value: 'unix' },
-                { displayName: 'Custom Format', value: 'custom' },
-            ]
+            options: formatOptions
         },
         {
             help: 'moment.js format string',
@@ -56,12 +32,7 @@ module.exports.templateTags = [{
         {
             displayName: 'Output Format',
             type: 'enum',
-            options: [
-                { displayName: 'ISO-8601', value: 'iso-8601' },
-                { displayName: 'Milliseconds', value: 'millis' },
-                { displayName: 'Unix', value: 'unix' },
-                { displayName: 'Custom Format', value: 'custom' },
-            ]
+            options: formatOptions
         },
         {
             help: 'moment.js format string',
@@ -72,26 +43,10 @@ module.exports.templateTags = [{
         }
     ],
     run(context, inputDate, inputDateType = 'iso-8601', inputFormatStr = '', outputDateType = 'iso-8601', outputFormatStr = '') {
-        console.info({
-            inputDate,
-            inputDateType,
-            inputFormatStr,
-            outputDateType,
-            outputFormatStr
-        });
-
-
-        if (typeof inputDateType === 'string') {
-            inputDateType = inputDateType.toLowerCase();
-        }
-
-        if (typeof outputDateType === 'string') {
-            outputDateType = outputDateType.toLowerCase();
-        }
-
         let date;
 
-        switch (inputDateType) {
+        // Input Date Formatting
+        switch (inputDateType.toLowerCase()) {
             case 'millis':
             case 'ms':
                 date = moment(Number(inputDate));
@@ -115,7 +70,8 @@ module.exports.templateTags = [{
                 throw new Error(`Invalid date type "${inputDateType}"`);
         }
 
-        switch (outputDateType) {
+        // Output Date Formatting
+        switch (outputDateType.toLowerCase()) {
             case 'millis':
             case 'ms':
                 return date.valueOf() + '';
@@ -126,7 +82,7 @@ module.exports.templateTags = [{
                 return Math.round(date.valueOf() / 1000) + '';
 
             case 'iso-8601':
-                return date.toISOString();
+                return date.toISOString(true);
 
             case 'custom':
                 return date.format(outputFormatStr);
@@ -134,5 +90,9 @@ module.exports.templateTags = [{
             default:
                 throw new Error(`Invalid date type "${outputDateType}"`);
         }
+    },
+    liveDisplayName(context) {
+        const outputFormat = formatOptions.find(opt => opt.value == context[3].value);
+        return `DateTime (${context[0].value}) => ${outputFormat.displayName}`;
     }
 }];
