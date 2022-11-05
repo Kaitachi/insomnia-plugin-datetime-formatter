@@ -1,0 +1,10 @@
+{
+  "name": "insomnia-plugin-datetime-formatter",
+  "version": "0.0.1",
+  "private": true,
+  "insomnia": {
+    "name": "datetime-formatter",
+    "description": ""
+  },
+  "main": "main.js"
+}
