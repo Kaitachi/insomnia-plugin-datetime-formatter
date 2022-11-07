@@ -6,6 +6,10 @@
         "description": "Choose a datetime and how it should be formatted"
     },
     "main": "main.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Kaitachi/insomnia-plugin-datetime-formatter.git"
+    },
     "dependencies": {
         "moment": "^2.29.1"
     }
