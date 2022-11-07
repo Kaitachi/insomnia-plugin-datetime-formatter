@@ -15,7 +15,7 @@ module.exports.templateTags = [{
         {
             displayName: 'Date to be Formatted',
             type: 'string',
-            defaultValue: moment().format('YYYY-MM-DD')
+            defaultValue: moment().toISOString()
         },
         {
             displayName: 'Input Format',
