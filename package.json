@@ -1,6 +1,6 @@
 {
     "name": "insomnia-plugin-datetime-formatter",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "insomnia": {
         "name": "datetime-formatter",
         "description": "Choose a datetime and how it should be formatted"
