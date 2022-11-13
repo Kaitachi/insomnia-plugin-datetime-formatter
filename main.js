@@ -13,7 +13,7 @@ module.exports.templateTags = [{
     description: 'date and time in custom format',
     args: [
         {
-            displayName: 'Date to be Formatted',
+            displayName: 'Input Date to be Formatted',
             type: 'string',
             defaultValue: moment().toISOString()
         },
