@@ -32,6 +32,7 @@ module.exports.templateTags = [{
         {
             displayName: 'Output Format',
             type: 'enum',
+            defaultValue: 'millis',
             options: formatOptions
         },
         {
